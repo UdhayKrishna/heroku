@@ -18,19 +18,24 @@ router.post('/card', (req, res) => {
 });
 
 function welcomeIntent(app){
-	app.ask(app.buildRichResponse()
-	// Create a basic card and add it to the rich response
-	.addSimpleResponse('Math and prime numbers it is!')
-		.addBasicCard(app.buildBasicCard(`42 is an even composite number. It
-		 is composed of three distinct prime numbers multiplied together. It
-		 has a total of eight divisors. 42 is an abundant number, because the
-		 sum of its proper divisors 54 is greater than itself. To count from
-		 1 to 42 would take you about twenty-one…`)
-		 .setTitle('Math & prime numbers')
-		 .addButton('Read more')
-		 .setImage('https://example.google.com/42.png', 'Image alternate text')
-		)
-	);
+    app.ask(new BasicCard({
+  text: `This is a basic card.  Text in a basic card can include "quotes" and
+  most other unicode characters including emoji 📱.  Basic cards also support
+  some markdown formatting like *emphasis* or _italics_, **strong** or
+  __bold__, and ***bold itallic*** or ___strong emphasis___ as well as other
+  things like line  \nbreaks`, // Note the two spaces before '\n' required for
+                               // a line break to be rendered in the card.
+  subtitle: 'This is a subtitle',
+  title: 'Title: this is a title',
+  buttons: new Button({
+    title: 'This is a button',
+    url: 'https://assistant.google.com/',
+  }),
+  image: new Image({
+    url: 'https://www.apkmirror.com/wp-content/uploads/2016/07/577db70aecc56-384x384.png',
+    alt: 'Image alternate text',
+  }),
+}));
 }
 
 express.use('/example', router);
