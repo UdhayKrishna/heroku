@@ -1,21 +1,17 @@
 {
-  "name": "agenthelpbot",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "dialogflowFirebaseFulfillment",
+  "description": "This is the default fulfillment for a Dialogflow agents using Cloud Functions for Firebase",
+  "version": "0.0.1",
+  "private": true,
+  "license": "Apache Version 2.0",
+  "author": "Google Inc.",
+  "engines": {
+    "node": "~6.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "firebase serve --only functions:dialogflowFirebaseFulfillment",
+    "deploy": "firebase deploy --only functions:dialogflowFirebaseFulfillment"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/UdhayKrishna/heroku.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/UdhayKrishna/heroku/issues"
-  },
-  "homepage": "https://github.com/UdhayKrishna/heroku#readme",
   "dependencies": {
     "actions-on-google": "2.0.0-alpha.4",
     "firebase-admin": "^4.2.1",
@@ -23,7 +19,6 @@
     "dialogflow": "^0.1.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
-    "dialogflow-fulfillment": "0.3.0-beta.3",
-    "unirest": "^0.5.1"
+    "dialogflow-fulfillment": "0.3.0-beta.3"
   }
 }
