@@ -1,31 +1,20 @@
-"use strict";
+'use strict';
 
-const functions = require('firebase-functions');
-const {WebhookClient} = require('dialogflow-fulfillment');
-const {Card, Suggestion} = require('dialogflow-fulfillment');
-const express = require('express');
-const bodyParser = require("body-parser");
+const express = require('express')();
+const router = require('express').Router();
+const bodyParser = require('body-parser');
 const ApiAiApp = require('actions-on-google').ApiAiApp;
 
-const restService = express();
+express.use(bodyParser.json({type: 'application/json'}));
 
-restService.use(
-  bodyParser.urlencoded({
-    extended: true
-  })
-);
+router.post('/card', (req, res) => {
+	const app = new ApiAiApp({request: req, response: res});
+	const WELCOME_INTENT = 'input.welcome';
 
-
-
-restService.use(bodyParser.json());
-
-restService.post("/echo", function(req, res) {
-    const app = new ApiAiApp({request: req, response: res});
-    const WELCOME_INTENT = 'input.welcome';
 	const actionMap = new Map();
 	actionMap.set(WELCOME_INTENT, welcomeIntent);
 	app.handleRequest(actionMap);
-
+	
 });
 
 function welcomeIntent(app){
@@ -44,7 +33,8 @@ function welcomeIntent(app){
 	);
 }
 
+express.use('/example', router);
 
-restService.listen(process.env.PORT || 8000, function() {
-  console.log("Server up and listening");
-});
+express.listen('8081', function () {
+  console.log('Example app is running')
+})
