@@ -1,41 +1,26 @@
-// You can find your project ID in your Dialogflow agent settings
-const projectId = 'agent-bot-98876'; //https://dialogflow.com/docs/agents#settings
-const sessionId = 'quickstart-session-id';
-const query = 'hello';
-const languageCode = 'en-US';
+'use strict'
 
-// Instantiate a DialogFlow client.
-const dialogflow = require('dialogflow');
-const sessionClient = new dialogflow.SessionsClient();
+const express = require('express')
+const bodyParser = require('body-parser')
 
-// Define session path
-const sessionPath = sessionClient.sessionPath(projectId, sessionId);
+// Create a new instance of express
+const app = express()
 
-// The text query request.
-const request = {
-  session: sessionPath,
-  queryInput: {
-    text: {
-      text: query,
-      languageCode: languageCode,
-    },
-  },
-};
+// Tell express to use the body-parser middleware and to not parse extended bodies
+app.use(bodyParser.urlencoded({ extended: false }))
 
-// Send request and log result
-sessionClient
-  .detectIntent(request)
-  .then(responses => {
-    console.log('Detected intent');
-    const result = responses[0].queryResult;
-    console.log(`  Query: ${result.queryText}`);
-    console.log(`  Response: ${result.fulfillmentText}`);
-    if (result.intent) {
-      console.log(`  Intent: ${result.intent.displayName}`);
-    } else {
-      console.log(`  No intent matched.`);
-    }
-  })
-  .catch(err => {
-    console.error('ERROR:', err);
-  });
+// Route that receives a POST request to /sms
+app.post('/sms', function (req, res) {
+  const body = req.body.Body
+  res.set('Content-Type', 'text/plain')
+  res.send(`You sent: ${body} to Express`)
+})
+
+// Tell our app to listen on port 3000
+app.listen(3000, function (err) {
+  if (err) {
+    throw err
+  }
+
+  console.log('Server started on port 3000')
+})
