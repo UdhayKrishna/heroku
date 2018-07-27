@@ -1,17 +1,31 @@
-'use strict';
+"use strict";
 
-const {dialogflow} = require('actions-on-google');
-const functions = require('firebase-functions');
+const express = require("express");
+const bodyParser = require("body-parser");
 
-const app = dialogflow({debug: true});
+const restService = express();
 
-app.intent('Default Welcome Intent', (conv) => {
-  conv.ask('Welcome to number echo! Say a number.');
+restService.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
+
+restService.use(bodyParser.json());
+
+restService.post("/echo", function(req, res) {
+  var speech =
+    req.body.result &&
+    req.body.result.parameters &&
+    req.body.result.parameters.echoText
+      ? req.body.result.parameters.echoText
+      : "Seems like some problem. \n\nSpeak again.";
+  return res.json({
+    fulfillmentText: speech,
+    source: "webhook-echo-sample"
+  });
 });
 
-app.intent('Input Number', (conv, {num}) => {
-  // extract the num parameter as a local string variable
-  conv.close(`You said ${num}`);
+restService.listen(process.env.PORT || 8000, function() {
+  console.log("Server up and listening");
 });
-
-exports.yourAction = functions.https.onRequest(app);
